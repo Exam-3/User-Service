@@ -1,0 +1,142 @@
+definitions:
+  authentication.AccessToken:
+    properties:
+      accesstoken:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      username:
+        type: string
+    type: object
+  authentication.CheckRefreshTokenRequest:
+    properties:
+      token:
+        type: string
+    type: object
+  authentication.ID:
+    properties:
+      id:
+        type: string
+    type: object
+  authentication.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  authentication.LoginResponse:
+    properties:
+      access:
+        $ref: '#/definitions/authentication.AccessToken'
+      refresh:
+        $ref: '#/definitions/authentication.RefreshToken'
+    type: object
+  authentication.RefreshToken:
+    properties:
+      refreshtoken:
+        type: string
+      userid:
+        type: string
+    type: object
+  authentication.UserDetails:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8085
+info:
+  contact: {}
+  description: API Gateway of Authorazation
+  title: Authorazation
+  version: "1.0"
+paths:
+  /user/login:
+    post:
+      description: it generates new acces and refresh tokens
+      parameters:
+      - description: user name and password
+        in: body
+        name: userinfo
+        required: true
+        schema:
+          $ref: '#/definitions/authentication.LoginRequest'
+      responses:
+        "200":
+          description: accestoken and refreshtoken
+          schema:
+            $ref: '#/definitions/authentication.LoginResponse'
+        "400":
+          description: Invalid date
+          schema:
+            type: string
+        "500":
+          description: error while reading from server
+          schema:
+            type: string
+      summary: Login user
+      tags:
+      - auth
+  /user/refresh:
+    post:
+      description: Checks refresh token. If valid, it returns a new access token.
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: refreshToken
+        required: true
+        schema:
+          $ref: '#/definitions/authentication.CheckRefreshTokenRequest'
+      responses:
+        "200":
+          description: accessToken
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Check refresh token
+      tags:
+      - auth
+  /user/register:
+    post:
+      description: create new users
+      parameters:
+      - description: User info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/authentication.UserDetails'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/authentication.ID'
+        "400":
+          description: Invalid data
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Register user
+      tags:
+      - auth
+swagger: "2.0"
