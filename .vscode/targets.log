@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul 13 18:05:27 2024
+# Make data base, printed on Sun Jul 14 19:19:56 2024
 
 # Variables
 
@@ -23,6 +21,8 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
 LC_NAME = uz_UZ.UTF-8
 # environment
 LC_NUMERIC = uz_UZ.UTF-8
@@ -36,6 +36,8 @@ LC_ADDRESS = uz_UZ.UTF-8
 MAKE_COMMAND := make
 # environment
 QT_ACCESSIBILITY = 1
+# environment
+GOPATH = /home/abbos/go
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
@@ -57,25 +59,23 @@ VSCODE_CODE_CACHE_PATH = /home/abbos/.config/Code/CachedData/dc96b837cf6bb4af9cd
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.VPURQ2
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.Y2D6Q2
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.3480
+GNOME_TERMINAL_SERVICE = :1.1370
 # makefile
 MAKEFLAGS = pqrR
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=15fbdd3132e367cd37059d086692442a
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=0bac337432e91be59b00dd576693d4ce
 # makefile
 CURDIR := /home/abbos/go/src/github.com/Exem-3/UserService
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
-# environment
-VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -99,19 +99,19 @@ MAKEFILE_LIST := Makefile
 # environment
 PT8HOME = /opt/pt
 # environment
-VSCODE_PID = 106735
+VSCODE_PID = 2105
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/abbos-Aspire-A315-57G:@/tmp/.ICE-unix/1602,unix/abbos-Aspire-A315-57G:/tmp/.ICE-unix/1602
+SESSION_MANAGER = local/abbos-Aspire-A315-57G:@/tmp/.ICE-unix/1589,unix/abbos-Aspire-A315-57G:/tmp/.ICE-unix/1589
 # automatic
 *F = $(notdir $*)
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=15fbdd3132e367cd37059d086692442a
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=0bac337432e91be59b00dd576693d4ce
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # environment
@@ -127,9 +127,11 @@ MAKECMDGOALS := all
 # environment
 XMODIFIERS = @im=ibus
 # environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/43bf6819_9a63_4d17_9894_aa90fac52544
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/e4713e17_a8fb_4e66_8d80_7fa940b4f7c3
 # environment
 MAKELEVEL := 0
 # default
@@ -146,6 +148,8 @@ LC_MONETARY = uz_UZ.UTF-8
 ^F = $(notdir $^)
 # environment
 LC_TIME = uz_UZ.UTF-8
+# environment
+INVOCATION_ID = 958372a5c71f4a80ac49a329b499c37c
 # environment
 USERNAME = abbos
 # environment
@@ -172,10 +176,14 @@ GNUMAKEFLAGS :=
 LOGNAME = abbos
 # makefile (from 'Makefile', line 23)
 CURRENT_DIR = $(shell pwd)
+# environment
+GOTELEMETRY_GOPLS_CLIENT_TOKEN = 370
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := proto-gen
 # environment
-SYSTEMD_EXEC_PID = 1602
+SYSTEMD_EXEC_PID = 1589
 # environment
 DISPLAY = :0
 # environment
@@ -185,9 +193,13 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
+MANAGERPID = 1441
+# environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
 LC_MEASUREMENT = uz_UZ.UTF-8
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2105
 # environment
 _ = /usr/bin/code
 # environment
@@ -196,6 +208,10 @@ LC_PAPER = uz_UZ.UTF-8
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 COLORTERM = truecolor
+# environment
+JOURNAL_STREAM = 8:32992
+# environment
+GOMODCACHE = /home/abbos/go/pkg/mod
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -212,6 +228,8 @@ VSCODE_IPC_HOOK = /run/user/1000/vscode-a7434a92-1.89-main.sock
 TERM = xterm-256color
 # environment
 IM_CONFIG_PHASE = 1
+# environment
+GOPROXY = https://proxy.golang.org,direct
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -233,7 +251,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = uz_UZ.UTF-8
 # variable set hash-table stats:
-# Load=110/1024=11%, Rehash=0, Collisions=12/140=9%
+# Load=120/1024=12%, Rehash=0, Collisions=12/150=8%
 
 # Pattern-specific Variable Values
 
@@ -241,9 +259,9 @@ LC_IDENTIFICATION = uz_UZ.UTF-8
 
 # Directories
 
-# . (device 66309, inode 4628427): 17 files, no impossibilities.
+# . (device 66309, inode 4628427): 20 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 20 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -255,22 +273,40 @@ migrate_file:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 45):
+#  recipe to execute (from 'Makefile', line 42):
 	migrate create -ext sql -dir migrations -seq insert_to_tables
 
 migrate_force:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 42):
+ 
+make: *** No rule to make target 'all'.  Stop.
+
+#  recipe to execute (from 'Makefile', line 39):
 	migrate -path migrations -database ${DB_URL} -verbose force 1
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2024-07-13 17:30:52.93288
+#  Last modified 2024-07-13 19:22:32.994361062
 #  File has been updated.
 #  Successfully updated.
+
+swag-gen:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 52):
+	~/go/bin/swag init -g ./api/router.go -o api/docs
+
+tidy:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 48):
+	go mod tidy
+	go mod vendor
 
 proto-gen:
 #  Implicit rule search has not been done.
@@ -279,7 +315,6 @@ proto-gen:
 #  recipe to execute (from 'Makefile', line 27):
 	./scripts/gen-proto.sh ${CURRENT_DIR}
 
- 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -297,44 +332,44 @@ run:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 33):
+#  recipe to execute (from 'Makefile', line 30):
 	go run cmd/main.go
 
 migrate_up:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 36):
+#  recipe to execute (from 'Makefile', line 33):
 	migrate -path migrations -database ${DB_URL} -verbose up
 
 test:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 48):
+#  recipe to execute (from 'Makefile', line 45):
 	go test ./storage/postgres
 
 migrate_down:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 39):
+#  recipe to execute (from 'Makefile', line 36):
 	migrate -path migrations -database ${DB_URL} -verbose down
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/21=0%
+# Load=13/1024=1%, Rehash=0, Collisions=0/23=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 29 / storage = 239 B / avg = 8 B
-# current buf: size = 8162 B / used = 239 B / count = 29 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 34 / storage = 274 B / avg = 8 B
+# current buf: size = 8162 B / used = 274 B / count = 34 / avg = 8 B
 
-# strcache performance: lookups = 40 / hit rate = 27%
+# strcache performance: lookups = 47 / hit rate = 27%
 # hash-table stats:
-# Load=29/8192=0%, Rehash=0, Collisions=0/40=0%
-# Finished Make data base on Sat Jul 13 18:05:27 2024
+# Load=34/8192=0%, Rehash=0, Collisions=0/47=0%
+# Finished Make data base on Sun Jul 14 19:19:56 2024
 
  

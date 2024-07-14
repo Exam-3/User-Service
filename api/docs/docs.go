@@ -55,6 +55,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/logout": {
+            "post": {
+                "description": "logs out the user and invalidates refresh token",
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout user",
+                "parameters": [
+                    {
+                        "description": "User ID",
+                        "name": "userinfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/authentication.LogoutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user/refresh": {
             "post": {
                 "description": "Checks refresh token. If valid, it returns a new access token.",
@@ -195,6 +235,14 @@ const docTemplate = `{
                 },
                 "refresh": {
                     "$ref": "#/definitions/authentication.RefreshToken"
+                }
+            }
+        },
+        "authentication.LogoutRequest": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "string"
                 }
             }
         },

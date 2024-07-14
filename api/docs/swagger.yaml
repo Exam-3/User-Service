@@ -34,6 +34,11 @@ definitions:
       refresh:
         $ref: '#/definitions/authentication.RefreshToken'
     type: object
+  authentication.LogoutRequest:
+    properties:
+      user_id:
+        type: string
+    type: object
   authentication.RefreshToken:
     properties:
       refreshtoken:
@@ -81,6 +86,32 @@ paths:
           schema:
             type: string
       summary: Login user
+      tags:
+      - auth
+  /user/logout:
+    post:
+      description: logs out the user and invalidates refresh token
+      parameters:
+      - description: User ID
+        in: body
+        name: userinfo
+        required: true
+        schema:
+          $ref: '#/definitions/authentication.LogoutRequest'
+      responses:
+        "200":
+          description: Logout successful
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Logout user
       tags:
       - auth
   /user/refresh:

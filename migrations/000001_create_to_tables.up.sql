@@ -2,24 +2,14 @@ CREATE TABLE users (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     username VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    password1 VARCHAR NOT NULL
+    password1 VARCHAR NOT NULL,
     full_name VARCHAR NOT NULL,
     eco_points INTEGER DEFAULT 100,
-    bio VARCHAR DEFAULT NULL
-    reason VARCHAR DEFAULT NULL,
+    bio VARCHAR DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
-
--- CREATE TABLE eco_points (
---     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
---     user_id uuid REFERENCES users(id),
---     eco_points INTEGER NOT NULL,
---     bio VARCHAR NOT NULL
---     reason VARCHAR,
---     timestmp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
--- );
 
 
 CREATE TABLE refresh_tokens (

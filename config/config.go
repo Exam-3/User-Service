@@ -23,7 +23,7 @@ type PostgresConfig struct {
 
 type ServerConfig struct {
 	USER_PORT        string
-	RESERVATION_PORT string
+	ITEM_PORT string
 }
 
 func Load() *Config {
@@ -41,7 +41,7 @@ func Load() *Config {
 		},
 		Server: ServerConfig{
 			USER_PORT:        cast.ToString(coalesce("USER_PORT", ":50051")),
-			RESERVATION_PORT: cast.ToString(coalesce("RESERVATION_PORT", ":50052")),
+			ITEM_PORT: cast.ToString(coalesce("ITEM_PORT", ":50052")),
 		},
 	}
 }

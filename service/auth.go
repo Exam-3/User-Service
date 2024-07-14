@@ -4,25 +4,27 @@ import (
 	"context"
 	"database/sql"
 	"log/slog"
+	"github.com/pkg/errors"
+	l "user_service/pkg/logger"
+	// "user_service/email"
 	"user_service/api/auth"
+	"user_service/storage/postgres"
+	
 	pb "user_service/genproto/authentication"
 	pbu "user_service/genproto/user"
-	// l "user_service/pkg/logger"
-	"user_service/storage/postgres"
-
-	"github.com/pkg/errors"
 )
 
 type AuthService struct {
 	pb.UnimplementedAuthenticationServer
 	Repo *postgres.UserRepo
 	Log  *slog.Logger
+	// mailer email.Mailer
 }
 
 func NewAuthService(db *sql.DB) *AuthService {
 	return &AuthService{
 		Repo: postgres.NewUserRepository(db),
-		// Log:  l.NewLogger(),
+		Log:  l.NewLogger(),
 	}
 }
 
@@ -118,3 +120,33 @@ func (S *AuthService) CheckRefreshToken(ctx context.Context, req *pb.CheckRefres
 	S.Log.Info("CheckRefreshToken service completed succesfully")
 	return &pb.CheckRefreshTokenResponse{Acces: true, Accestoken: res.Access.Accesstoken}, nil
 }
+
+
+func (s *AuthService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
+    err := s.Repo.DeleteRefreshToken(ctx, req.UserId)
+    if err != nil {
+        return nil, err
+    }
+
+    return &pb.LogoutResponse{
+        Message: "Successfully logged out",
+    }, nil
+}
+
+// func (s *AuthService) ResetPassword(ctx context.Context, req *pb.ResetPasswordRequest) (*pb.ResetPasswordResponse, error) {
+// 	// Check if email exists in database
+// 	user, err := s.Repo.GetUserByEmail(ctx, req.Email)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	// Generate reset password token and save to DB (optional)
+
+// 	// Send reset password email
+// 	err = s.mailer.SendResetPasswordEmail(user.Email, user.Username)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return &pb.ResetPasswordResponse{Message: "Instructions sent"}, nil
+// }

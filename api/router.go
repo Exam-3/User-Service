@@ -20,5 +20,7 @@ func Router(hand *handler.Handler) *gin.Engine {
 	user.POST("/register", hand.Register)
 	user.POST("/login", hand.Login)
 	user.POST("/refresh", hand.RefreshToken)
+	user.POST("/logout", hand.Logout)
+	
 	return router
 }

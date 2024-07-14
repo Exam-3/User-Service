@@ -21,13 +21,10 @@
 # 	@migrate -database ${DB_URL} -path migrations -verbose force ${1}
 
 CURRENT_DIR=$(shell pwd)
-DB_URL=postgres://postgres:root@localhost:5432/reservation_service?sslmode=disable
+DB_URL=postgres://postgres:root@localhost:5432/users?sslmode=disable
 
 proto-gen:
 	./scripts/gen-proto.sh ${CURRENT_DIR}
-# proto-gen:
-# 	./scripts/gen-proto.sh /home/abbos/go/src/github.com/exem/UserService
-
 
 run:
 	go run cmd/main.go
@@ -46,3 +43,10 @@ migrate_file:
 
 test:
 	go test ./storage/postgres
+
+tidy:
+	go mod tidy
+	go mod vendor
+
+swag-gen:
+	~/go/bin/swag init -g ./api/router.go -o api/docs

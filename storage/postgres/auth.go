@@ -66,3 +66,21 @@ func (u *UserRepo) DeleteRefreshToken(ctx context.Context, userID string) error 
 	_, err := u.DB.ExecContext(ctx, query, userID)
 	return err
 }
+
+
+func (u *UserRepo) GetUserByEmail(ctx context.Context, email string) (*pb.UserInfo, error) {
+    user := pb.UserInfo{}
+    query := `
+    SELECT id, username, password
+    FROM users
+    WHERE email = $1 AND deleted_at IS NULL`
+
+    err := u.DB.QueryRowContext(ctx, query, email).Scan(&user.Id, &user.Username, &user.Password)
+    if err != nil {
+        return nil, err
+    }
+
+    return &user, nil
+}
+
+

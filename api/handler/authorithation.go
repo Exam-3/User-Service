@@ -104,3 +104,30 @@ func (h Handler) RefreshToken(c *gin.Context) {
 	})
 	h.Log.Info("refreshtoken is succesful")
 }
+
+// Logout godoc
+// @Summary Logout user
+// @Description logs out the user and invalidates refresh token
+// @Tags auth
+// @Param userinfo body authentication.LogoutRequest true "User ID"
+// @Success 200 {object} string "Logout successful"
+// @Failure 400 {object} string "Invalid request"
+// @Failure 500 {object} string "Server error"
+// @Router /user/logout [post]
+func (h Handler) Logout(c *gin.Context) {
+	h.Log.Info("Logout is starting")
+	req := pb.LogoutRequest{}
+	if err := c.BindJSON(&req); err != nil {
+		h.Log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	res, err := h.Auth.Logout(c, &req)
+	if err != nil {
+		h.Log.Error(err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	h.Log.Info("Logout ended")
+	c.JSON(http.StatusOK, gin.H{"message": res.Message})
+}
