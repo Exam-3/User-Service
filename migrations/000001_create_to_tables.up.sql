@@ -3,13 +3,16 @@ CREATE TABLE users (
     username VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     password1 VARCHAR NOT NULL,
-    full_name VARCHAR NOT NULL,
+    full_name VARCHAR DEFAULT NULL,
     eco_points INTEGER DEFAULT 100,
+    points INTEGER DEFAULT 0,
+    reason VARCHAR NOT NULL DEFAULT "Unsuccessful item swap",
     bio VARCHAR DEFAULT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
+
 
 
 CREATE TABLE refresh_tokens (

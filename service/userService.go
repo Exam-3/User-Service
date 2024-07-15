@@ -81,6 +81,14 @@ func (u *UserService) AddEcoPoints(ctx context.Context, req *pb.AddEcoPointsRequ
     return eco, nil
 }
 
+func (u *UserService) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPointsHistoryRequest) (*pb.GetEcoPointsHistoryResponse, error) {
+	history, err := u.Repo.GetEcoPointsHistory(ctx, req)
+    if err!= nil {
+        return nil, errors.Wrap(err, "get eco points history failed")
+    }
+    return history, nil
+}
+
 
 func (u *UserService) ValidateUser(ctx context.Context, id string) (bool, error) {
 	status, err := u.Repo.ValidateUser(ctx, id)

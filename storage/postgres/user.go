@@ -126,15 +126,18 @@ func (u *UserRepo) GetEcoPoints(ctx context.Context, eco *pb.GetEcoPointsRequest
 	return &resp, nil
 }
 
-func (u *UserRepo) AddEcoPoints(ctx context.Context, id *pb.AddEcoPointsRequest) (*pb.AddEcoPointsResponse, error) {
+func (u *UserRepo) AddEcoPoints(ctx context.Context, eco *pb.AddEcoPointsRequest) (*pb.AddEcoPointsResponse, error) {
 	query := `
         UPDATE users
-        SET eco_points = eco_points + $1, updated_at = NOW()
-        WHERE id = $2 AND deleted_at IS NOT NULL
+        SET eco_points = eco_points + $1, points = $2, reason = $3, updated_at = NOW()
+        WHERE id = $4 AND deleted_at IS NOT NULL
         RETURNING id, eco_points, updated_at
         `
     user := pb.AddEcoPointsResponse{}
-    err := u.DB.QueryRowContext(ctx, query, id.UserId).Scan(&user.UserId, &user.EcoPoints, &user.Timestamp)
+    err := u.DB.QueryRowContext(ctx, query,eco.Points, eco.Points, eco.Reason, eco.UserId).Scan(
+		&user.UserId, &user.EcoPoints, &user.Timestamp,
+	)
+
     if err!= nil {
         log.Println("user not found")
         return nil, err
@@ -142,12 +145,60 @@ func (u *UserRepo) AddEcoPoints(ctx context.Context, id *pb.AddEcoPointsRequest)
     return &user, nil
 }
 
+// "history": [
+//     {
+//       "id": "transaction123",
+//       "points": 50,
+//       "type": "earned",
+//       "reason": "Successful item swap",
+//       "timestamp": "2023-05-21T12:30:00Z"
+//     },
+func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPointsHistoryRequest) (*pb.GetEcoPointsHistoryResponse, error) {
+	query := `
+		SELECT id, points, reason, updated_at
+		FROM users 
+		WHERE id = $1
+		OFFSET $2
+		LIMIT $3
+		`
+	rows, err := u.DB.QueryContext(ctx, query,req.UserId, req.Page, req.Limit)
+	if err!= nil {
+        log.Println("failed to get eco points history:", err)
+        return nil, err
+    }
+	defer rows.Close()
 
-// Bu yerda history qoldi 
+	history := &pb.GetEcoPointsHistoryResponse{}
+
+	for rows.Next() {
+		item := &pb.EcoPointTransaction{}
+
+        err := rows.Scan(&item.Id, &item.Points, &item.Reason, &item.Timestamp)
+        if err!= nil {
+            log.Println("failed to scan row:", err)
+            return nil, err
+        }
+
+		if item.Reason == "Successful item swap" {
+			item.Type = "earned"
+		} else {
+			item.Type = "pending"
+		}
+
+        history.History = append(history.History, item)
+	}
+
+	history.Total = 1
+	history.Page = req.Page
+	history.Limit = req.Limit
+	
+	return history, nil
+
+}
 
 
 
-func (u *UserRepo) ValidateUser(ctx context.Context, id string) (bool, error) {
+func (u *UserRepo) ValidateUser(ctx context.Context, id *pb.ValidateUserId) (bool, error) {
 	query := `
     select EXISTS (
 		select 1
@@ -156,7 +207,7 @@ func (u *UserRepo) ValidateUser(ctx context.Context, id string) (bool, error) {
 	)`
 
 	var status bool
-	err := u.DB.QueryRowContext(ctx, query, id).Scan(&status)
+	err := u.DB.QueryRowContext(ctx, query, id.Id).Scan(&status)
 	if err != nil {
 		log.Println("failed to scan user")
 		return false, err
