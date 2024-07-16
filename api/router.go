@@ -14,13 +14,17 @@ import (
 // @host localhost:8085
 // BasePath: /
 func Router(hand *handler.Handler) *gin.Engine {
+
 	router := gin.Default()
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	user := router.Group("/user")
+
 	user.POST("/register", hand.Register)
 	user.POST("/login", hand.Login)
 	user.POST("/refresh", hand.RefreshToken)
 	user.POST("/logout", hand.Logout)
-	
+
 	return router
 }

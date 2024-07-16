@@ -1,47 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net"
+	"user_service/api"
+	"user_service/api/handler"
+	"user_service/genproto/authentication"
+	l "user_service/pkg/logger"
+
 	"google.golang.org/grpc"
-	"user_service/pkg"
-	
-	"user_service/config"
-	"user_service/service"
-	"user_service/storage/postgres"
-
-	pb "user_service/genproto/user"
-	pb1 "user_service/genproto/authentication"
-
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
-	db, err := postgres.ConnectDB()
+	hand := Newhandler()
+	router := api.Router(hand)
+	log.Println("server is running")
+	log.Fatal(router.Run(":8085"))
+}
+func Newhandler() *handler.Handler {
+	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("error while connecting to database: %v", err)
+		log.Panic(err)
 	}
-	defer db.Close()
-
-	fmt.Println("Starting server...")
-	cfg := config.Load()
-	fmt.Println(cfg.Server.USER_PORT)
-	lis, err := net.Listen("tcp", cfg.Server.USER_PORT)
-	if err != nil {
-		log.Fatalf("error while listening: %v", err)
-	}
-	defer lis.Close()
-
-	itemClient := pkg.CreateItemClient(*cfg)
-	userService := service.NewUserService(db, itemClient)
-	authService := service.NewAuthService(db)
-	server := grpc.NewServer()
-	pb.RegisterUserServiceServer(server, userService)
-	pb1.RegisterAuthenticationServer(server, authService)
-
-	log.Printf("server listening at %v", lis.Addr())
-	err = server.Serve(lis)
-	if err != nil {
-		log.Fatalf("error while serving: %v", err)
-	}
+	authservice := authentication.NewAuthenticationClient(conn)
+	loggers := l.NewLogger()
+	return &handler.Handler{Auth: authservice, Log: loggers}
 }

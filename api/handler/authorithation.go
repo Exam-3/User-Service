@@ -23,11 +23,15 @@ func (h Handler) Register(c *gin.Context) {
 	if err := c.BindJSON(&req); err != nil {
 		h.Log.Error(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
 	}
+	fmt.Println(&req)
 	res, err := h.Auth.Register(c, &req)
 	if err != nil {
 		h.Log.Error(err.Error())
 		c.JSON(500, gin.H{"error": err.Error()})
+		fmt.Println(err)
+
 		return
 	}
 	h.Log.Info("Register ended")

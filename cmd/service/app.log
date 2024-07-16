@@ -1,0 +1,3 @@
+time=2024-07-15T17:58:42.693+05:00 level=INFO msg="Register service is working"
+time=2024-07-15T17:58:42.707+05:00 level=ERROR msg="Error on register user.: pq: column \"password\" of relation \"users\" does not exist"
+time=2024-07-15T17:58:42.707+05:00 level=INFO msg="Register service completed succesfully"

@@ -21,9 +21,9 @@ func NewUserRepository(db *sql.DB) *UserRepo {
 func (u *UserRepo) GetUserByID(ctx context.Context, id *pb.UserID) (*pb.GetUserProfileResponse, error) {
 
 	query := `
-        SELECT id, username, email, full_name, eco_points, created_at,
+        SELECT id, username, email, full_name, eco_points, created_at
         FROM users
-        WHERE deleted_at IS NOT NULL AND id = $1
+        WHERE deleted_at IS NULL AND id = $1
 		`
 
 	resp := pb.GetUserProfileResponse{}
@@ -42,9 +42,11 @@ func (u *UserRepo) GetUsers(ctx context.Context, filter *pb.GetUsersRequest) (*p
         SELECT id, username, full_name, eco_points
         FROM users
         WHERE deleted_at IS NULL
+		limit = $1
+		Offset = $2
     `
 
-	rows, err := u.DB.QueryContext(ctx, query)
+	rows, err := u.DB.QueryContext(ctx, query, filter.Limit, filter.Page)
 	if err != nil {
 		log.Println("failed to get users:", err)
 		return nil, err
@@ -74,9 +76,9 @@ func (u *UserRepo) GetUsers(ctx context.Context, filter *pb.GetUsersRequest) (*p
 func (u *UserRepo) UpdateUserProfile(ctx context.Context, user *pb.UpdateUserProfileRequest) (*pb.UpdateProfileResponse, error) {
 	query := `
         UPDATE users
-        SET full_name = $1, bio = $2 updated_at = NOW()
-        WHERE id = $3 AND deleted_at IS NOT NULL
-        RETURNING id, username, email, full_name, bio, update_at
+        SET full_name = $1, bio = $2, updated_at = NOW()
+        WHERE id = $3 AND deleted_at IS NULL
+        RETURNING id, username, email, full_name, bio, updated_at
     `
 
 	resp := pb.UpdateProfileResponse{}
@@ -129,8 +131,8 @@ func (u *UserRepo) GetEcoPoints(ctx context.Context, eco *pb.GetEcoPointsRequest
 func (u *UserRepo) AddEcoPoints(ctx context.Context, eco *pb.AddEcoPointsRequest) (*pb.AddEcoPointsResponse, error) {
 	query := `
         UPDATE users
-        SET eco_points = eco_points + $1, points = $2, reason = $3, updated_at = NOW()
-        WHERE id = $4 AND deleted_at IS NOT NULL
+        SET eco_points = eco_points = $1, points = $2, reason = $3, updated_at = NOW()
+        WHERE id = $4 AND deleted_at IS NULL
         RETURNING id, eco_points, updated_at
         `
     user := pb.AddEcoPointsResponse{}
@@ -145,14 +147,7 @@ func (u *UserRepo) AddEcoPoints(ctx context.Context, eco *pb.AddEcoPointsRequest
     return &user, nil
 }
 
-// "history": [
-//     {
-//       "id": "transaction123",
-//       "points": 50,
-//       "type": "earned",
-//       "reason": "Successful item swap",
-//       "timestamp": "2023-05-21T12:30:00Z"
-//     },
+
 func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPointsHistoryRequest) (*pb.GetEcoPointsHistoryResponse, error) {
 	query := `
 		SELECT id, points, reason, updated_at

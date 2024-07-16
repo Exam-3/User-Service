@@ -1,0 +1,3 @@
+time=2024-07-16T17:25:34.036+05:00 level=ERROR msg="bazadan ma'lumot olishda xato: pq: syntax error at or near \"FROM\""
+time=2024-07-16T17:26:32.422+05:00 level=ERROR msg="bazadan ma'lumot olishda xato: sql: no rows in result set"
+time=2024-07-16T17:27:45.570+05:00 level=ERROR msg="bazadan ma'lumot olishda xato: sql: no rows in result set"

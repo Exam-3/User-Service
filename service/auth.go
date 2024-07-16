@@ -29,26 +29,35 @@ func NewAuthService(db *sql.DB) *AuthService {
 }
 
 func (S *AuthService) Register(ctx context.Context, req *pb.UserDetails) (*pb.ID, error) {
-	S.Log.Info("Register service is working")
+
+	S.Log.Info("Register ishlashni boshladi")
+
 	res, err := S.Repo.Register(ctx, req)
 	if err != nil {
-		err = errors.Wrap(err, "Error on register user.")
+
+		err = errors.Wrap(err, "bazaga register qo'shishda xatolik.")
 		S.Log.Error(err.Error())
+		return nil, err
 	}
-	S.Log.Info("Register service completed succesfully")
+
+	S.Log.Info("Register ishini tugatdi")
 	return res, err
 }
 
 func (S *AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	S.Log.Info("Login service is working")
+	S.Log.Info("login ishini boshladi")
+
 	checker, err := S.Repo.GetUserByUsername(ctx, req.Username)
 	if err != nil {
-		err = errors.Wrap(err, "Error while geting user.")
+
+		err = errors.Wrap(err, "bazadan user name topilnadi.")
 		S.Log.Error(err.Error())
 		return nil, err
 	}
 
 	if req.Password != checker.Password {
+
+		S.Log.Error("tekshirilgan password xato")
 		return nil, errors.New("username or password error")
 	}
 
@@ -63,45 +72,59 @@ func (S *AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 		},
 	}
 	err = auth.GeneratedRefreshJWTToken(res)
-	S.Log.Info("refresh token is generated")
+
+	S.Log.Info("refresh token generatsiya qilishni boshladi")
+
 	if err != nil {
-		S.Log.Error("Error while create refresh token")
+		S.Log.Error("refresh token generatsiya qilishda xatolik ",err)
 		return nil, err
 	}
 	err = auth.GeneratedAccessJWTToken(res)
-	S.Log.Info("acces token is generated")
+
+	S.Log.Info("acces token generatsiya qilishni boshladi")
+
 	if err != nil {
-		S.Log.Error("Error while create access token")
+		S.Log.Error("acces token generatsiya qilishda xatolik ",err)
 		return nil, err
 	}
 	err = S.Repo.StoreRefreshToken(ctx, res)
+
+	S.Log.Info("Refresh token kiritishni boshladi")
+
 	if err != nil {
-		S.Log.Error("Error while inserting refresh token")
+		S.Log.Error("refresh token kiritishda xatolik")
 		return nil, err
 	}
-	S.Log.Info("Login service completed succesfully")
+
+	S.Log.Info("login service ishini tugatdi")
 	return res, nil
 }
 
 func (S *AuthService) CheckRefreshToken(ctx context.Context, req *pb.CheckRefreshTokenRequest) (*pb.CheckRefreshTokenResponse, error) {
-	S.Log.Info("CheckRefreshToken service is working")
+	S.Log.Info("CheckRefreshToken service ishini boshladi")
 	
 	_, err := auth.ValidateRefreshToken(req.Token)
 	if err != nil {
-		S.Log.Error("refresh tokin is invalid", err)
+
+		S.Log.Error("xato refresh tokin kiritildi", err)
 		return &pb.CheckRefreshTokenResponse{Acces: false}, err
 	}
 	id, err := auth.GetUserIdFromRefreshToken(req.Token)
+
+	S.Log.Info("GetUserIdFromRefreshToken ishini boshladi")
 	if err != nil {
-		S.Log.Error("error while reading user id from refresh token", err)
+
+		S.Log.Error("get user from refresh tokendan malumot olishda xatolik", err)
 		return nil, err
 	}
 	id1 := pbu.UserID{
 		UserId: id,
 	}
 	info, err := S.Repo.GetUserByID(ctx, &id1)
+	S.Log.Info("GetUserByID ishini boshladi")
 	if err != nil {
-		S.Log.Error("error while taking user infos", err)
+
+		S.Log.Error("bazadan user topilmadi", err)
 		return nil, err
 	}
 	res := pb.LoginResponse{
@@ -112,19 +135,22 @@ func (S *AuthService) CheckRefreshToken(ctx context.Context, req *pb.CheckRefres
 		},
 	}
 	err = auth.GeneratedAccessJWTToken(&res)
-	S.Log.Info("acces token is revreated")
+	S.Log.Info("acces token generatsiya qilishni boshladi")
 	if err != nil {
-
+		S.Log.Error("acces token generatsiya qilishda xatolik ", err)
 		return nil, err
 	}
-	S.Log.Info("CheckRefreshToken service completed succesfully")
+	S.Log.Info("CheckRefreshToken service ishini tugatdi")
 	return &pb.CheckRefreshTokenResponse{Acces: true, Accestoken: res.Access.Accesstoken}, nil
 }
 
 
 func (s *AuthService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
+
+	s.Log.Info("logout service ishini boshladi")
     err := s.Repo.DeleteRefreshToken(ctx, req.UserId)
     if err != nil {
+		s.Log.Error("refresh token o'chirishda xatolik", err)
         return nil, err
     }
 
