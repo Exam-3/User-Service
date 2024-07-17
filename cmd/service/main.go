@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	authen "user_service/cmd/router"
 	"user_service/pkg"
 
 	"google.golang.org/grpc"
@@ -11,6 +12,7 @@ import (
 	"user_service/config"
 	"user_service/service"
 	"user_service/storage/postgres"
+	"user_service/storage/redis"
 
 	pb1 "user_service/genproto/authentication"
 	pb "user_service/genproto/user"
@@ -23,6 +25,8 @@ func main() {
 	}
 	defer db.Close()
 
+	authen.Authen()
+
 	fmt.Println("Starting server...")
 	cfg := config.Load()
 	fmt.Println(cfg.Server.USER_PORT)
@@ -30,7 +34,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("error while listening: %v", err)
 	}
+
 	defer lis.Close()
+
+	rdb := redis.ConnectRedis()
+	defer rdb.Close()
 
 	itemClient := pkg.CreateItemClient(*cfg)
 	userService := service.NewUserService(db, itemClient)

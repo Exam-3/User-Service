@@ -1,10 +1,12 @@
 package auth
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"time"
 	pb "user_service/genproto/authentication"
+
+	// "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 )
 
 const (

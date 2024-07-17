@@ -118,6 +118,7 @@ func (u *UserRepo) GetUsers(ctx context.Context, filter *pb.GetUsersRequest) (*p
 
 func (u *UserRepo) UpdateUserProfile(ctx context.Context, user *pb.UpdateUserProfileRequest) (*pb.UpdateProfileResponse, error) {
 	
+	fmt.Println(user)
 	var (
 		params []interface{}
 	)
@@ -147,12 +148,17 @@ func (u *UserRepo) UpdateUserProfile(ctx context.Context, user *pb.UpdateUserPro
 		
 	}
 
-	
-	filter := fmt.Sprintf("WHERE id = $%d AND deleted_at IS NULL",len(params))
+
+	count++
+	filter := fmt.Sprintf("WHERE id = $%d AND deleted_at IS NULL",count)
 	query1 += filter+ret
 	params = append(params, user.UserId)
+	fmt.Println(params)
+	fmt.Println(query1)
+	
 	
 	resp := pb.UpdateProfileResponse{}
+
 	row := u.DB.QueryRowContext(ctx, query1, params...)
 	err := row.Scan(&resp.Id, &resp.Username, &resp.Email, &resp.FullName, &resp.Bio, &resp.UpdatedAt)
 	if err != nil {
@@ -185,7 +191,8 @@ func (u *UserRepo) DeleteUser(ctx context.Context, id *pb.UserID) (*pb.DeleteUse
 func (u *UserRepo) GetEcoPoints(ctx context.Context, eco *pb.GetEcoPointsRequest) (*pb.GetEcoPointsResponse, error) {
 	query := `
         SELECT id, eco_points, updated_at
-        WHERE id = $1
+		From users
+        WHERE id = $1 And deleted_at is null
     `
 
 	resp := pb.GetEcoPointsResponse{}
@@ -224,7 +231,8 @@ func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, filter *pb.GetEcoPoi
 		params []interface{}
 	)
 
-	query1 := ` SELECT id, username, full_name, eco_points, created_at FROM users 
+	query1 := ` SELECT id, points, reason, created_at 
+	FROM users 
 	WHERE deleted_at IS NULL `
 	query := ""
 
@@ -232,14 +240,14 @@ func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, filter *pb.GetEcoPoi
 	if filter.Points > 0 {
 		params = append(params, filter.Points)
 		count++
-		query = fmt.Sprintf("And username = $%d ", count)
+		query = fmt.Sprintf("And points = $%d ", count)
 		query1 += query
 	}
 
 	if len(filter.Reason) > 0 {
 		params = append(params, filter.Reason)
 		count++
-		query = fmt.Sprintf("And full_name = $%d ", count)
+		query = fmt.Sprintf("And reason = $%d ", count)
 		query1 += query
 
 	}
