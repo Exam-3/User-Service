@@ -202,7 +202,7 @@ func (u *UserRepo) GetEcoPoints(ctx context.Context, eco *pb.GetEcoPointsRequest
 func (u *UserRepo) AddEcoPoints(ctx context.Context, eco *pb.AddEcoPointsRequest) (*pb.AddEcoPointsResponse, error) {
 	query := `
         UPDATE users
-        SET eco_points = eco_points = $1, points = $2, reason = $3, updated_at = NOW()
+        SET eco_points = eco_points + $1, points = $2, reason = $3, updated_at = NOW()
         WHERE id = $4 AND deleted_at IS NULL
         RETURNING id, eco_points, updated_at
         `
