@@ -26,6 +26,7 @@ const (
 	UserService_GetEcoPoints_FullMethodName        = "/user.UserService/GetEcoPoints"
 	UserService_AddEcoPoints_FullMethodName        = "/user.UserService/AddEcoPoints"
 	UserService_GetEcoPointsHistory_FullMethodName = "/user.UserService/GetEcoPointsHistory"
+	UserService_ValidateUserId_FullMethodName      = "/user.UserService/ValidateUserId"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -39,6 +40,7 @@ type UserServiceClient interface {
 	GetEcoPoints(ctx context.Context, in *GetEcoPointsRequest, opts ...grpc.CallOption) (*GetEcoPointsResponse, error)
 	AddEcoPoints(ctx context.Context, in *AddEcoPointsRequest, opts ...grpc.CallOption) (*AddEcoPointsResponse, error)
 	GetEcoPointsHistory(ctx context.Context, in *GetEcoPointsHistoryRequest, opts ...grpc.CallOption) (*GetEcoPointsHistoryResponse, error)
+	ValidateUserId(ctx context.Context, in *ValidateUserIdRequest, opts ...grpc.CallOption) (*ValidateUserIdResponse, error)
 }
 
 type userServiceClient struct {
@@ -119,6 +121,16 @@ func (c *userServiceClient) GetEcoPointsHistory(ctx context.Context, in *GetEcoP
 	return out, nil
 }
 
+func (c *userServiceClient) ValidateUserId(ctx context.Context, in *ValidateUserIdRequest, opts ...grpc.CallOption) (*ValidateUserIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateUserIdResponse)
+	err := c.cc.Invoke(ctx, UserService_ValidateUserId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -130,6 +142,7 @@ type UserServiceServer interface {
 	GetEcoPoints(context.Context, *GetEcoPointsRequest) (*GetEcoPointsResponse, error)
 	AddEcoPoints(context.Context, *AddEcoPointsRequest) (*AddEcoPointsResponse, error)
 	GetEcoPointsHistory(context.Context, *GetEcoPointsHistoryRequest) (*GetEcoPointsHistoryResponse, error)
+	ValidateUserId(context.Context, *ValidateUserIdRequest) (*ValidateUserIdResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -157,6 +170,9 @@ func (UnimplementedUserServiceServer) AddEcoPoints(context.Context, *AddEcoPoint
 }
 func (UnimplementedUserServiceServer) GetEcoPointsHistory(context.Context, *GetEcoPointsHistoryRequest) (*GetEcoPointsHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEcoPointsHistory not implemented")
+}
+func (UnimplementedUserServiceServer) ValidateUserId(context.Context, *ValidateUserIdRequest) (*ValidateUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateUserId not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -297,6 +313,24 @@ func _UserService_GetEcoPointsHistory_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ValidateUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ValidateUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_ValidateUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ValidateUserId(ctx, req.(*ValidateUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -331,6 +365,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEcoPointsHistory",
 			Handler:    _UserService_GetEcoPointsHistory_Handler,
+		},
+		{
+			MethodName: "ValidateUserId",
+			Handler:    _UserService_ValidateUserId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

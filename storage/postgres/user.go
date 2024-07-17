@@ -4,7 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
+
 	// "os/user"
 
 	pb "user_service/genproto/user"
@@ -38,15 +40,56 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id *pb.UserID) (*pb.GetUserP
 }
 
 func (u *UserRepo) GetUsers(ctx context.Context, filter *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
-	query := `
-        SELECT id, username, full_name, eco_points
-        FROM users
-        WHERE deleted_at IS NULL
-		limit = $1
-		Offset = $2
-    `
 
-	rows, err := u.DB.QueryContext(ctx, query, filter.Limit, filter.Page)
+	var (
+		params []interface{}
+	)
+
+	query1 := ` SELECT id, username, full_name, eco_points, created_at FROM users 
+	WHERE deleted_at IS NULL `
+	query := ""
+
+	count := 0
+	if len(filter.Username) > 0 {
+		params = append(params, filter.Username)
+		count++
+		query = fmt.Sprintf("And username = $%d ", count)
+		query1 += query
+	}
+
+	if len(filter.FullName) > 0 {
+		params = append(params, filter.FullName)
+		count++
+		query = fmt.Sprintf("And full_name = $%d ", count)
+		query1 += query
+
+	}
+
+	if filter.EcoPoints > 0 {
+		params = append(params, filter.EcoPoints)
+		count++
+		query = fmt.Sprintf("AND eco_points = $%d ", count)
+		query1 += query
+
+	}
+
+	if filter.Limit > 0 {
+		params = append(params, filter.Limit)
+		count++
+		query = fmt.Sprintf("OFFSET $%d ", count)
+		query1 += query
+
+	}
+
+	if filter.Page > 0 {
+		params = append(params, filter.Page*filter.Limit)
+		count++
+		query = fmt.Sprintf("LIMIT $%d ", count)
+		query1 += query
+
+	}
+
+	rows, err := u.DB.QueryContext(ctx, query, params...)
 	if err != nil {
 		log.Println("failed to get users:", err)
 		return nil, err
@@ -74,15 +117,43 @@ func (u *UserRepo) GetUsers(ctx context.Context, filter *pb.GetUsersRequest) (*p
 }
 
 func (u *UserRepo) UpdateUserProfile(ctx context.Context, user *pb.UpdateUserProfileRequest) (*pb.UpdateProfileResponse, error) {
-	query := `
+	
+	var (
+		params []interface{}
+	)
+	query1 := `
         UPDATE users
-        SET full_name = $1, bio = $2, updated_at = NOW()
-        WHERE id = $3 AND deleted_at IS NULL
-        RETURNING id, username, email, full_name, bio, updated_at
-    `
+        SET updated_at = NOW()`
 
+	query := ""
+
+	
+	ret := `
+	RETURNING id, username, email, full_name, bio, updated_at
+    `
+	count := 0
+	if len(user.Username) > 0 {
+		params = append(params, user.Username)
+		count++
+		query = fmt.Sprintf(", username = $%d ", count)
+		query1 += query
+	}
+
+	if len(user.FullName) > 0 {
+		params = append(params, user.FullName)
+		count++
+		query = fmt.Sprintf(", full_name = $%d ", count)
+		query1 += query
+		
+	}
+
+	
+	filter := fmt.Sprintf("WHERE id = $%d AND deleted_at IS NULL",len(params))
+	query1 += filter+ret
+	params = append(params, user.UserId)
+	
 	resp := pb.UpdateProfileResponse{}
-	row := u.DB.QueryRowContext(ctx, query, user.FullName, user.Bio, user.UserId)
+	row := u.DB.QueryRowContext(ctx, query1, params...)
 	err := row.Scan(&resp.Id, &resp.Username, &resp.Email, &resp.FullName, &resp.Bio, &resp.UpdatedAt)
 	if err != nil {
 		log.Println("user not found")
@@ -135,32 +206,64 @@ func (u *UserRepo) AddEcoPoints(ctx context.Context, eco *pb.AddEcoPointsRequest
         WHERE id = $4 AND deleted_at IS NULL
         RETURNING id, eco_points, updated_at
         `
-    user := pb.AddEcoPointsResponse{}
-    err := u.DB.QueryRowContext(ctx, query,eco.Points, eco.Points, eco.Reason, eco.UserId).Scan(
+	user := pb.AddEcoPointsResponse{}
+	err := u.DB.QueryRowContext(ctx, query, eco.Points, eco.Points, eco.Reason, eco.UserId).Scan(
 		&user.UserId, &user.EcoPoints, &user.Timestamp,
 	)
 
-    if err!= nil {
-        log.Println("user not found")
-        return nil, err
-    }
-    return &user, nil
+	if err != nil {
+		log.Println("user not found")
+		return nil, err
+	}
+	return &user, nil
 }
 
+func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, filter *pb.GetEcoPointsHistoryRequest) (*pb.GetEcoPointsHistoryResponse, error) {
+	
+	var (
+		params []interface{}
+	)
 
-func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPointsHistoryRequest) (*pb.GetEcoPointsHistoryResponse, error) {
-	query := `
-		SELECT id, points, reason, updated_at
-		FROM users 
-		WHERE id = $1
-		OFFSET $2
-		LIMIT $3
-		`
-	rows, err := u.DB.QueryContext(ctx, query,req.UserId, req.Page, req.Limit)
-	if err!= nil {
-        log.Println("failed to get eco points history:", err)
-        return nil, err
-    }
+	query1 := ` SELECT id, username, full_name, eco_points, created_at FROM users 
+	WHERE deleted_at IS NULL `
+	query := ""
+
+	count := 0
+	if filter.Points > 0 {
+		params = append(params, filter.Points)
+		count++
+		query = fmt.Sprintf("And username = $%d ", count)
+		query1 += query
+	}
+
+	if len(filter.Reason) > 0 {
+		params = append(params, filter.Reason)
+		count++
+		query = fmt.Sprintf("And full_name = $%d ", count)
+		query1 += query
+
+	}
+
+	if filter.Limit > 0 {
+		params = append(params, filter.Limit)
+		count++
+		query = fmt.Sprintf("OFFSET $%d ", count)
+		query1 += query
+
+	}
+
+	if filter.Page > 0 {
+		params = append(params, filter.Page*filter.Limit)
+		count++
+		query = fmt.Sprintf("LIMIT $%d ", count)
+		query1 += query
+
+	}
+	rows, err := u.DB.QueryContext(ctx, query, params...)
+	if err != nil {
+		log.Println("failed to get eco points history:", err)
+		return nil, err
+	}
 	defer rows.Close()
 
 	history := &pb.GetEcoPointsHistoryResponse{}
@@ -168,11 +271,11 @@ func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPoints
 	for rows.Next() {
 		item := &pb.EcoPointTransaction{}
 
-        err := rows.Scan(&item.Id, &item.Points, &item.Reason, &item.Timestamp)
-        if err!= nil {
-            log.Println("failed to scan row:", err)
-            return nil, err
-        }
+		err := rows.Scan(&item.Id, &item.Points, &item.Reason, &item.Timestamp)
+		if err != nil {
+			log.Println("failed to scan row:", err)
+			return nil, err
+		}
 
 		if item.Reason == "Successful item swap" {
 			item.Type = "earned"
@@ -180,20 +283,22 @@ func (u *UserRepo) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPoints
 			item.Type = "pending"
 		}
 
-        history.History = append(history.History, item)
+		history.History = append(history.History, item)
 	}
 
-	history.Total = 1
-	history.Page = req.Page
-	history.Limit = req.Limit
-	
+	query =`
+		select count(id) from users where deleted_at is null
+		`
+	err = u.DB.QueryRowContext(ctx, query).Scan(history.Total)
+
+	history.Page = filter.Page
+	history.Limit = filter.Limit
+
 	return history, nil
 
 }
 
-
-
-func (u *UserRepo) ValidateUser(ctx context.Context, id *pb.ValidateUserId) (bool, error) {
+func (u *UserRepo) ValidateUser(ctx context.Context, id *pb.ValidateUserIdRequest) (bool, error) {
 	query := `
     select EXISTS (
 		select 1

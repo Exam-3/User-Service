@@ -19,25 +19,35 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	ItemService_AddItem_FullMethodName                 = "/item.ItemService/AddItem"
-	ItemService_UpdateItem_FullMethodName              = "/item.ItemService/UpdateItem"
-	ItemService_DeleteItem_FullMethodName              = "/item.ItemService/DeleteItem"
-	ItemService_ListItems_FullMethodName               = "/item.ItemService/ListItems"
-	ItemService_GetItem_FullMethodName                 = "/item.ItemService/GetItem"
-	ItemService_SearchItems_FullMethodName             = "/item.ItemService/SearchItems"
-	ItemService_AddRecyclingCenter_FullMethodName      = "/item.ItemService/AddRecyclingCenter"
-	ItemService_SearchRecyclingCenters_FullMethodName  = "/item.ItemService/SearchRecyclingCenters"
-	ItemService_SubmitItemsForRecycling_FullMethodName = "/item.ItemService/SubmitItemsForRecycling"
-	ItemService_SendSwapRequest_FullMethodName         = "/item.ItemService/SendSwapRequest"
-	ItemService_AcceptSwapRequest_FullMethodName       = "/item.ItemService/AcceptSwapRequest"
-	ItemService_RejectSwapRequest_FullMethodName       = "/item.ItemService/RejectSwapRequest"
-	ItemService_ListSwapRequests_FullMethodName        = "/item.ItemService/ListSwapRequests"
+	ItemService_AddItemCategory_FullMethodName            = "/item.ItemService/AddItemCategory"
+	ItemService_AddItem_FullMethodName                    = "/item.ItemService/AddItem"
+	ItemService_UpdateItem_FullMethodName                 = "/item.ItemService/UpdateItem"
+	ItemService_DeleteItem_FullMethodName                 = "/item.ItemService/DeleteItem"
+	ItemService_ListItems_FullMethodName                  = "/item.ItemService/ListItems"
+	ItemService_GetItem_FullMethodName                    = "/item.ItemService/GetItem"
+	ItemService_SearchItems_FullMethodName                = "/item.ItemService/SearchItems"
+	ItemService_AddRecyclingCenter_FullMethodName         = "/item.ItemService/AddRecyclingCenter"
+	ItemService_SearchRecyclingCenters_FullMethodName     = "/item.ItemService/SearchRecyclingCenters"
+	ItemService_SubmitItemsForRecycling_FullMethodName    = "/item.ItemService/SubmitItemsForRecycling"
+	ItemService_SendSwapRequest_FullMethodName            = "/item.ItemService/SendSwapRequest"
+	ItemService_AcceptSwapRequest_FullMethodName          = "/item.ItemService/AcceptSwapRequest"
+	ItemService_RejectSwapRequest_FullMethodName          = "/item.ItemService/RejectSwapRequest"
+	ItemService_ListSwapRequests_FullMethodName           = "/item.ItemService/ListSwapRequests"
+	ItemService_AddRating_FullMethodName                  = "/item.ItemService/AddRating"
+	ItemService_GetRatings_FullMethodName                 = "/item.ItemService/GetRatings"
+	ItemService_Statistics_FullMethodName                 = "/item.ItemService/Statistics"
+	ItemService_CreateEcoChallenge_FullMethodName         = "/item.ItemService/CreateEcoChallenge"
+	ItemService_ParticipateEcoChallenge_FullMethodName    = "/item.ItemService/ParticipateEcoChallenge"
+	ItemService_UpdateEcoChallengeProgress_FullMethodName = "/item.ItemService/UpdateEcoChallengeProgress"
+	ItemService_CreateEcoTip_FullMethodName               = "/item.ItemService/CreateEcoTip"
+	ItemService_GetEcoTips_FullMethodName                 = "/item.ItemService/GetEcoTips"
 )
 
 // ItemServiceClient is the client API for ItemService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ItemServiceClient interface {
+	AddItemCategory(ctx context.Context, in *AddItemCategoryRequest, opts ...grpc.CallOption) (*AddItemCategoryResponse, error)
 	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*ItemResponse, error)
 	UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*ItemResponse, error)
 	DeleteItem(ctx context.Context, in *DeleteItemRequest, opts ...grpc.CallOption) (*DeleteItemResponse, error)
@@ -51,6 +61,14 @@ type ItemServiceClient interface {
 	AcceptSwapRequest(ctx context.Context, in *AcceptSwapRequestRequest, opts ...grpc.CallOption) (*SwapResponse, error)
 	RejectSwapRequest(ctx context.Context, in *RejectSwapRequestRequest, opts ...grpc.CallOption) (*SwapResponse, error)
 	ListSwapRequests(ctx context.Context, in *ListSwapRequestsRequest, opts ...grpc.CallOption) (*ListSwapRequestsResponse, error)
+	AddRating(ctx context.Context, in *AddRatingRequest, opts ...grpc.CallOption) (*Rating, error)
+	GetRatings(ctx context.Context, in *GetRatingsRequest, opts ...grpc.CallOption) (*GetRatingsResponse, error)
+	Statistics(ctx context.Context, in *GetStatisticsRequest, opts ...grpc.CallOption) (*GetStatisticsResponse, error)
+	CreateEcoChallenge(ctx context.Context, in *CreateEcoChallengeRequest, opts ...grpc.CallOption) (*CreateEcoChallengeResponse, error)
+	ParticipateEcoChallenge(ctx context.Context, in *ParticipateEcoChallengeRequest, opts ...grpc.CallOption) (*ParticipateEcoChallengeResponse, error)
+	UpdateEcoChallengeProgress(ctx context.Context, in *UpdateEcoChallengeProgressRequest, opts ...grpc.CallOption) (*UpdateEcoChallengeProgressResponse, error)
+	CreateEcoTip(ctx context.Context, in *CreateEcoTipRequest, opts ...grpc.CallOption) (*CreateEcoTipResponse, error)
+	GetEcoTips(ctx context.Context, in *GetEcoTipsRequest, opts ...grpc.CallOption) (*GetEcoTipsResponse, error)
 }
 
 type itemServiceClient struct {
@@ -59,6 +77,16 @@ type itemServiceClient struct {
 
 func NewItemServiceClient(cc grpc.ClientConnInterface) ItemServiceClient {
 	return &itemServiceClient{cc}
+}
+
+func (c *itemServiceClient) AddItemCategory(ctx context.Context, in *AddItemCategoryRequest, opts ...grpc.CallOption) (*AddItemCategoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddItemCategoryResponse)
+	err := c.cc.Invoke(ctx, ItemService_AddItemCategory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *itemServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*ItemResponse, error) {
@@ -191,10 +219,91 @@ func (c *itemServiceClient) ListSwapRequests(ctx context.Context, in *ListSwapRe
 	return out, nil
 }
 
+func (c *itemServiceClient) AddRating(ctx context.Context, in *AddRatingRequest, opts ...grpc.CallOption) (*Rating, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Rating)
+	err := c.cc.Invoke(ctx, ItemService_AddRating_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) GetRatings(ctx context.Context, in *GetRatingsRequest, opts ...grpc.CallOption) (*GetRatingsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRatingsResponse)
+	err := c.cc.Invoke(ctx, ItemService_GetRatings_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) Statistics(ctx context.Context, in *GetStatisticsRequest, opts ...grpc.CallOption) (*GetStatisticsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetStatisticsResponse)
+	err := c.cc.Invoke(ctx, ItemService_Statistics_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) CreateEcoChallenge(ctx context.Context, in *CreateEcoChallengeRequest, opts ...grpc.CallOption) (*CreateEcoChallengeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateEcoChallengeResponse)
+	err := c.cc.Invoke(ctx, ItemService_CreateEcoChallenge_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) ParticipateEcoChallenge(ctx context.Context, in *ParticipateEcoChallengeRequest, opts ...grpc.CallOption) (*ParticipateEcoChallengeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ParticipateEcoChallengeResponse)
+	err := c.cc.Invoke(ctx, ItemService_ParticipateEcoChallenge_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) UpdateEcoChallengeProgress(ctx context.Context, in *UpdateEcoChallengeProgressRequest, opts ...grpc.CallOption) (*UpdateEcoChallengeProgressResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateEcoChallengeProgressResponse)
+	err := c.cc.Invoke(ctx, ItemService_UpdateEcoChallengeProgress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) CreateEcoTip(ctx context.Context, in *CreateEcoTipRequest, opts ...grpc.CallOption) (*CreateEcoTipResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateEcoTipResponse)
+	err := c.cc.Invoke(ctx, ItemService_CreateEcoTip_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *itemServiceClient) GetEcoTips(ctx context.Context, in *GetEcoTipsRequest, opts ...grpc.CallOption) (*GetEcoTipsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEcoTipsResponse)
+	err := c.cc.Invoke(ctx, ItemService_GetEcoTips_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ItemServiceServer is the server API for ItemService service.
 // All implementations must embed UnimplementedItemServiceServer
 // for forward compatibility
 type ItemServiceServer interface {
+	AddItemCategory(context.Context, *AddItemCategoryRequest) (*AddItemCategoryResponse, error)
 	AddItem(context.Context, *AddItemRequest) (*ItemResponse, error)
 	UpdateItem(context.Context, *UpdateItemRequest) (*ItemResponse, error)
 	DeleteItem(context.Context, *DeleteItemRequest) (*DeleteItemResponse, error)
@@ -208,6 +317,14 @@ type ItemServiceServer interface {
 	AcceptSwapRequest(context.Context, *AcceptSwapRequestRequest) (*SwapResponse, error)
 	RejectSwapRequest(context.Context, *RejectSwapRequestRequest) (*SwapResponse, error)
 	ListSwapRequests(context.Context, *ListSwapRequestsRequest) (*ListSwapRequestsResponse, error)
+	AddRating(context.Context, *AddRatingRequest) (*Rating, error)
+	GetRatings(context.Context, *GetRatingsRequest) (*GetRatingsResponse, error)
+	Statistics(context.Context, *GetStatisticsRequest) (*GetStatisticsResponse, error)
+	CreateEcoChallenge(context.Context, *CreateEcoChallengeRequest) (*CreateEcoChallengeResponse, error)
+	ParticipateEcoChallenge(context.Context, *ParticipateEcoChallengeRequest) (*ParticipateEcoChallengeResponse, error)
+	UpdateEcoChallengeProgress(context.Context, *UpdateEcoChallengeProgressRequest) (*UpdateEcoChallengeProgressResponse, error)
+	CreateEcoTip(context.Context, *CreateEcoTipRequest) (*CreateEcoTipResponse, error)
+	GetEcoTips(context.Context, *GetEcoTipsRequest) (*GetEcoTipsResponse, error)
 	mustEmbedUnimplementedItemServiceServer()
 }
 
@@ -215,6 +332,9 @@ type ItemServiceServer interface {
 type UnimplementedItemServiceServer struct {
 }
 
+func (UnimplementedItemServiceServer) AddItemCategory(context.Context, *AddItemCategoryRequest) (*AddItemCategoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddItemCategory not implemented")
+}
 func (UnimplementedItemServiceServer) AddItem(context.Context, *AddItemRequest) (*ItemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddItem not implemented")
 }
@@ -254,6 +374,30 @@ func (UnimplementedItemServiceServer) RejectSwapRequest(context.Context, *Reject
 func (UnimplementedItemServiceServer) ListSwapRequests(context.Context, *ListSwapRequestsRequest) (*ListSwapRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSwapRequests not implemented")
 }
+func (UnimplementedItemServiceServer) AddRating(context.Context, *AddRatingRequest) (*Rating, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRating not implemented")
+}
+func (UnimplementedItemServiceServer) GetRatings(context.Context, *GetRatingsRequest) (*GetRatingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRatings not implemented")
+}
+func (UnimplementedItemServiceServer) Statistics(context.Context, *GetStatisticsRequest) (*GetStatisticsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Statistics not implemented")
+}
+func (UnimplementedItemServiceServer) CreateEcoChallenge(context.Context, *CreateEcoChallengeRequest) (*CreateEcoChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEcoChallenge not implemented")
+}
+func (UnimplementedItemServiceServer) ParticipateEcoChallenge(context.Context, *ParticipateEcoChallengeRequest) (*ParticipateEcoChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ParticipateEcoChallenge not implemented")
+}
+func (UnimplementedItemServiceServer) UpdateEcoChallengeProgress(context.Context, *UpdateEcoChallengeProgressRequest) (*UpdateEcoChallengeProgressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEcoChallengeProgress not implemented")
+}
+func (UnimplementedItemServiceServer) CreateEcoTip(context.Context, *CreateEcoTipRequest) (*CreateEcoTipResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateEcoTip not implemented")
+}
+func (UnimplementedItemServiceServer) GetEcoTips(context.Context, *GetEcoTipsRequest) (*GetEcoTipsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEcoTips not implemented")
+}
 func (UnimplementedItemServiceServer) mustEmbedUnimplementedItemServiceServer() {}
 
 // UnsafeItemServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -265,6 +409,24 @@ type UnsafeItemServiceServer interface {
 
 func RegisterItemServiceServer(s grpc.ServiceRegistrar, srv ItemServiceServer) {
 	s.RegisterService(&ItemService_ServiceDesc, srv)
+}
+
+func _ItemService_AddItemCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddItemCategoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).AddItemCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_AddItemCategory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).AddItemCategory(ctx, req.(*AddItemCategoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ItemService_AddItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -501,6 +663,150 @@ func _ItemService_ListSwapRequests_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ItemService_AddRating_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddRatingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).AddRating(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_AddRating_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).AddRating(ctx, req.(*AddRatingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_GetRatings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRatingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).GetRatings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_GetRatings_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).GetRatings(ctx, req.(*GetRatingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_Statistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStatisticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).Statistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_Statistics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).Statistics(ctx, req.(*GetStatisticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_CreateEcoChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateEcoChallengeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).CreateEcoChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_CreateEcoChallenge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).CreateEcoChallenge(ctx, req.(*CreateEcoChallengeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_ParticipateEcoChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ParticipateEcoChallengeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).ParticipateEcoChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_ParticipateEcoChallenge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).ParticipateEcoChallenge(ctx, req.(*ParticipateEcoChallengeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_UpdateEcoChallengeProgress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateEcoChallengeProgressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).UpdateEcoChallengeProgress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_UpdateEcoChallengeProgress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).UpdateEcoChallengeProgress(ctx, req.(*UpdateEcoChallengeProgressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_CreateEcoTip_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateEcoTipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).CreateEcoTip(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_CreateEcoTip_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).CreateEcoTip(ctx, req.(*CreateEcoTipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ItemService_GetEcoTips_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEcoTipsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ItemServiceServer).GetEcoTips(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ItemService_GetEcoTips_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ItemServiceServer).GetEcoTips(ctx, req.(*GetEcoTipsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ItemService_ServiceDesc is the grpc.ServiceDesc for ItemService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -508,6 +814,10 @@ var ItemService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "item.ItemService",
 	HandlerType: (*ItemServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AddItemCategory",
+			Handler:    _ItemService_AddItemCategory_Handler,
+		},
 		{
 			MethodName: "AddItem",
 			Handler:    _ItemService_AddItem_Handler,
@@ -559,6 +869,38 @@ var ItemService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSwapRequests",
 			Handler:    _ItemService_ListSwapRequests_Handler,
+		},
+		{
+			MethodName: "AddRating",
+			Handler:    _ItemService_AddRating_Handler,
+		},
+		{
+			MethodName: "GetRatings",
+			Handler:    _ItemService_GetRatings_Handler,
+		},
+		{
+			MethodName: "Statistics",
+			Handler:    _ItemService_Statistics_Handler,
+		},
+		{
+			MethodName: "CreateEcoChallenge",
+			Handler:    _ItemService_CreateEcoChallenge_Handler,
+		},
+		{
+			MethodName: "ParticipateEcoChallenge",
+			Handler:    _ItemService_ParticipateEcoChallenge_Handler,
+		},
+		{
+			MethodName: "UpdateEcoChallengeProgress",
+			Handler:    _ItemService_UpdateEcoChallengeProgress_Handler,
+		},
+		{
+			MethodName: "CreateEcoTip",
+			Handler:    _ItemService_CreateEcoTip_Handler,
+		},
+		{
+			MethodName: "GetEcoTips",
+			Handler:    _ItemService_GetEcoTips_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

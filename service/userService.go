@@ -117,7 +117,7 @@ func (u *UserService) GetEcoPointsHistory(ctx context.Context, req *pb.GetEcoPoi
 }
 
 
-func (u *UserService) ValidateUser(ctx context.Context, id *pb.ValidateUserId) (bool, error) {
+func (u *UserService) ValidateUser(ctx context.Context, id *pb.ValidateUserIdRequest) (bool, error) {
 
 	u.Logger.Info("Validate user ishlashni boshladi")
 	status, err := u.Repo.ValidateUser(ctx, id)
