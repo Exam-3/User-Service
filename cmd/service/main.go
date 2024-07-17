@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
-	authen "user_service/cmd/router"
+	// authen "user_service/cmd/router"
 	"user_service/pkg"
 
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ func main() {
 	}
 	defer db.Close()
 
-	authen.Authen()
+	// authen.Authen()
 
 	fmt.Println("Starting server...")
 	cfg := config.Load()

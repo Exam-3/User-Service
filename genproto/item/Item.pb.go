@@ -151,12 +151,12 @@ type AddItemRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId         string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name           string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description    string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	CategoryId     string   `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	Condition      string   `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
-	SwapPreference []string `protobuf:"bytes,6,rep,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
+	UserId         string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name           string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	CategoryId     string `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Condition      string `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
+	SwapPreference string `protobuf:"bytes,6,opt,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
 }
 
 func (x *AddItemRequest) Reset() {
@@ -226,11 +226,11 @@ func (x *AddItemRequest) GetCondition() string {
 	return ""
 }
 
-func (x *AddItemRequest) GetSwapPreference() []string {
+func (x *AddItemRequest) GetSwapPreference() string {
 	if x != nil {
 		return x.SwapPreference
 	}
-	return nil
+	return ""
 }
 
 type ItemResponse struct {
@@ -238,16 +238,16 @@ type ItemResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id             string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId         string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name           string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description    string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	CategoryId     string   `protobuf:"bytes,5,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	Condition      string   `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
-	SwapPreference []string `protobuf:"bytes,7,rep,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
-	Status         string   `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
-	CreatedAt      string   `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt      string   `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Id             string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId         string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name           string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	CategoryId     string `protobuf:"bytes,5,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Condition      string `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`
+	SwapPreference string `protobuf:"bytes,7,opt,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
+	Status         string `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
+	CreatedAt      string `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      string `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 }
 
 func (x *ItemResponse) Reset() {
@@ -324,11 +324,11 @@ func (x *ItemResponse) GetCondition() string {
 	return ""
 }
 
-func (x *ItemResponse) GetSwapPreference() []string {
+func (x *ItemResponse) GetSwapPreference() string {
 	if x != nil {
 		return x.SwapPreference
 	}
-	return nil
+	return ""
 }
 
 func (x *ItemResponse) GetStatus() string {
@@ -357,12 +357,12 @@ type UpdateItemRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ItemId         string   `protobuf:"bytes,1,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
-	Name           string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description    string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	CategoryId     string   `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	Condition      string   `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
-	SwapPreference []string `protobuf:"bytes,6,rep,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
+	ItemId         string `protobuf:"bytes,1,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
+	Name           string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	CategoryId     string `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Condition      string `protobuf:"bytes,5,opt,name=condition,proto3" json:"condition,omitempty"`
+	SwapPreference string `protobuf:"bytes,6,opt,name=swap_preference,json=swapPreference,proto3" json:"swap_preference,omitempty"`
 }
 
 func (x *UpdateItemRequest) Reset() {
@@ -432,11 +432,11 @@ func (x *UpdateItemRequest) GetCondition() string {
 	return ""
 }
 
-func (x *UpdateItemRequest) GetSwapPreference() []string {
+func (x *UpdateItemRequest) GetSwapPreference() string {
 	if x != nil {
 		return x.SwapPreference
 	}
-	return nil
+	return ""
 }
 
 type DeleteItemRequest struct {
@@ -3124,7 +3124,7 @@ var file_Item_proto_rawDesc = []byte{
 	0x6f, 0x72, 0x79, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69,
 	0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74,
 	0x69, 0x6f, 0x6e, 0x12, 0x27, 0x0a, 0x0f, 0x73, 0x77, 0x61, 0x70, 0x5f, 0x70, 0x72, 0x65, 0x66,
-	0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x06, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77,
+	0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77,
 	0x61, 0x70, 0x50, 0x72, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x22, 0xab, 0x02, 0x0a,
 	0x0c, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a,
 	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x17, 0x0a,
@@ -3138,7 +3138,7 @@ var file_Item_proto_rawDesc = []byte{
 	0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x27, 0x0a, 0x0f, 0x73,
 	0x77, 0x61, 0x70, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x07,
-	0x20, 0x03, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77, 0x61, 0x70, 0x50, 0x72, 0x65, 0x66, 0x65, 0x72,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77, 0x61, 0x70, 0x50, 0x72, 0x65, 0x66, 0x65, 0x72,
 	0x65, 0x6e, 0x63, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x08,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1d, 0x0a, 0x0a,
 	0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09,
@@ -3156,7 +3156,7 @@ var file_Item_proto_rawDesc = []byte{
 	0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x05, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x27,
 	0x0a, 0x0f, 0x73, 0x77, 0x61, 0x70, 0x5f, 0x70, 0x72, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63,
-	0x65, 0x18, 0x06, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77, 0x61, 0x70, 0x50, 0x72, 0x65,
+	0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x73, 0x77, 0x61, 0x70, 0x50, 0x72, 0x65,
 	0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x22, 0x45, 0x0a, 0x11, 0x44, 0x65, 0x6c, 0x65, 0x74,
 	0x65, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07,
 	0x69, 0x74, 0x65, 0x6d, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69,

@@ -30,6 +30,7 @@ func NewUserService(db *sql.DB, item pbi.ItemServiceClient) *UserService {
 	}
 }
 
+
 func (u *UserService) GetUserProfile(ctx context.Context, id *pb.UserID) (*pb.GetUserProfileResponse, error) {
 	u.Logger.Info("get user ishlashni boshladi")
 	user, err := u.Repo.GetUserByID(ctx, id)
@@ -70,6 +71,20 @@ func (u *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest)
 
 	u.Logger.Info("Deleting user ishlashni tugatdi")
 	return user, nil
+}
+
+func (u *UserService) GetUsers (ctx context.Context, req *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
+
+    u.Logger.Info("Get users ishlashni boshladi")
+
+    users, err := u.Repo.GetUsers(ctx, req)
+    if err!= nil {
+        u.Logger.Error(fmt.Sprintf("bazadan ma'lumotlarni olishda xato: %v", err))
+        return nil, err
+    }
+
+    u.Logger.Info("Get users ishlashni tugatdi")
+    return users, nil
 }
 
 func (u *UserService) GetEcoPoints(ctx context.Context, req *pb.GetEcoPointsRequest) (*pb.GetEcoPointsResponse, error) {
