@@ -2,16 +2,13 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'all'.  Stop.
 
 # GNU Make 4.3
- 
 # Built for x86_64-pc-linux-gnu
- 
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
-# Make data base, printed on Wed Jul 17 08:37:32 2024
+# Make data base, printed on Wed Jul 17 09:47:07 2024
 
 # Variables
 
@@ -62,49 +59,77 @@ VSCODE_CODE_CACHE_PATH = /home/abbos/.config/Code/CachedData/dc96b837cf6bb4af9cd
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.XB6UQ2
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.N81TQ2
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # makefile
+ 
 MAKEFLAGS = pqrR
+ 
 # makefile
+ 
 CURDIR := /home/abbos/go/src/github.com/Exem-3/UserService
+ 
 # environment
+ 
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+ 
 # environment
+ 
 LESSOPEN = | /usr/bin/lesspipe %s
+ 
 # automatic
+ 
 *D = $(patsubst %/,%,$(dir $*))
+ 
 # environment
+ 
 MFLAGS = -pqrR
+ 
 # environment
+ 
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+ 
 # default
+ 
 .SHELLFLAGS := -c
+ 
 # environment
+ 
 WAYLAND_DISPLAY = wayland-0
+ 
 # environment
+ 
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+ 
 # automatic
+ 
 +D = $(patsubst %/,%,$(dir $+))
+ 
 # environment
+ 
 XDG_SESSION_DESKTOP = ubuntu
+ 
 # makefile (from 'Makefile', line 1)
+ 
 MAKEFILE_LIST := Makefile
+ 
 # automatic
+ 
 @F = $(notdir $@)
+ 
 # environment
 PT8HOME = /opt/pt
 # environment
-VSCODE_PID = 20642
+VSCODE_PID = 2118
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/abbos-Aspire-A315-57G:@/tmp/.ICE-unix/20049,unix/abbos-Aspire-A315-57G:/tmp/.ICE-unix/20049
+SESSION_MANAGER = local/abbos-Aspire-A315-57G:@/tmp/.ICE-unix/1588,unix/abbos-Aspire-A315-57G:/tmp/.ICE-unix/1588
 # automatic
 *F = $(notdir $*)
 # environment
@@ -148,7 +173,7 @@ LC_MONETARY = uz_UZ.UTF-8
 # environment
 LC_TIME = uz_UZ.UTF-8
 # environment
-INVOCATION_ID = 309667a15dc14fca8c758aeae69aa895
+INVOCATION_ID = 48656ed6769343409918705fba422b5e
 # environment
 USERNAME = abbos
 # environment
@@ -180,7 +205,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := proto-gen
 # environment
-SYSTEMD_EXEC_PID = 20071
+SYSTEMD_EXEC_PID = 1613
 # environment
 DISPLAY = :0
 # environment
@@ -190,11 +215,11 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-MANAGERPID = 1438
+MANAGERPID = 1443
 # environment
 LC_MEASUREMENT = uz_UZ.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 20642
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2118
 # environment
 _ = /usr/share/code/code
 # environment
@@ -202,7 +227,7 @@ LC_PAPER = uz_UZ.UTF-8
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
-JOURNAL_STREAM = 8:96309
+JOURNAL_STREAM = 8:31269
 # environment
 GOMODCACHE = /home/abbos/go/pkg/mod
 # environment
@@ -290,124 +315,68 @@ tidy:
 	go mod tidy
 	go mod vendor
 
- 
 proto-gen:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 5):
- 
 	./scripts/gen-proto.sh ${CURRENT_DIR}
- 
 
- 
 # Not a target:
- 
 .DEFAULT:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 
- 
 # Not a target:
- 
 all:
- 
 #  Command line target.
- 
 #  Implicit rule search has been done.
- 
 #  File does not exist.
- 
 #  File has not been updated.
- 
 
- 
 run:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 8):
- 
 	go run cmd/service/main.go
- 
 
- 
 migrate_up:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 11):
- 
 	migrate -path migrations -database ${DB_URL} -verbose up
- 
 
- 
 test:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 23):
- 
 	go test ./storage/postgres
- 
 
- 
 migrate_down:
- 
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
- 
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 14):
- 
 	migrate -path migrations -database ${DB_URL} -verbose down
- 
 
 # files hash-table stats:
- 
 # Load=13/1024=1%, Rehash=0, Collisions=0/23=0%
 # VPATH Search Paths
- 
 
- 
 # No 'vpath' search paths.
- 
 
- 
 # No general ('VPATH' variable) search path.
- 
 
- 
 # strcache buffers: 1 (0) / strings = 35 / storage = 282 B / avg = 8 B
- 
 # current buf: size = 8162 B / used = 282 B / count = 35 / avg = 8 B
 
 # strcache performance: lookups = 48 / hit rate = 27%
 # hash-table stats:
 # Load=35/8192=0%, Rehash=0, Collisions=0/48=0%
-# Finished Make data base on Wed Jul 17 08:37:32 2024
+# Finished Make data base on Wed Jul 17 09:47:07 2024
 
  
